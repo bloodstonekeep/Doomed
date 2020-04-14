@@ -7,13 +7,13 @@
 #include "PlayerCharacter.generated.h"
 
 /**
- * 
- */
+	*
+	*/
 UCLASS()
-class DOOMED_API APlayerCharacter : public ACharacterBase
+	class DOOMED_API APlayerCharacter : public ACharacterBase
 {
 	GENERATED_BODY()
-	
+
 public:
 	APlayerCharacter();
 };

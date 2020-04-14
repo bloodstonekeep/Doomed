@@ -5,7 +5,7 @@
 #include "CharacterBase.generated.h"
 
 UCLASS()
-class DOOMED_API ACharacterBase : public ACharacter
+	class DOOMED_API ACharacterBase : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -28,7 +28,7 @@ public:
 protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character|Death")
 		void OnDeath();
-	
+
 	virtual void OnDeath_Implementation() PURE_VIRTUAL(ACharacterBase::OnDeath_Implementation, );
 
 protected:
