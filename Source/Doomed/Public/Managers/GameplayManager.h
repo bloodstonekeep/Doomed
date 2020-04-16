@@ -13,5 +13,9 @@ UCLASS()
 class DOOMED_API AGameplayManager : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+public:
+    
+    UFUNCTION(BlueprintCallable, Category = "Game")
+        void RespawnPlayer(AController* controller);
 };

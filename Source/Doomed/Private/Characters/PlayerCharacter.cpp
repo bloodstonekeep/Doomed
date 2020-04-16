@@ -216,6 +216,19 @@ float APlayerCharacter::TakeDamage(float damageAmount, FDamageEvent const& damag
 
 void APlayerCharacter::OnDeath_Implementation()
 {
+	canShoot = false;
+
+	auto movement = GetCharacterMovement();
+
+	movement->StopMovementImmediately();
+	movement->DisableMovement();
+	movement->SetJumpAllowed(false);
+
+	gunMesh_->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
+
+	gunMesh_->SetHiddenInGame(true);
+	skeletMesh_->SetHiddenInGame(true);
+
 	if (!hud_)
 	{
 		if (auto player = Cast<APlayerController>(GetController()))
