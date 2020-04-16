@@ -11,6 +11,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "UI/GenericHUD.h"
 
 APlayerCharacter::APlayerCharacter()
 	: previousSpeed_(0.f)
@@ -67,6 +68,8 @@ APlayerCharacter::APlayerCharacter()
 
 	hitEffect = nullptr;
 	trailEffect = nullptr;
+
+	hud_ = nullptr;
 }
 
 void APlayerCharacter::MoveForward(float value)
@@ -107,6 +110,40 @@ void APlayerCharacter::Turn(float value)
 	AddControllerYawInput(value * baseTurnRate * deltaTime);
 }
 
+void APlayerCharacter::PauseGame()
+{
+	if (auto player = Cast<APlayerController>(GetController()))
+	{
+		if (!hud_)
+		{
+			hud_ = Cast<AGenericHUD>(player->GetHUD());
+		}
+
+		hud_->ShowSpecificMenu(hud_->GetPauseMenuClass(), false, true);
+
+		player->SetPause(true);
+	}
+}
+
+void APlayerCharacter::UnPauseGame()
+{
+	if (auto player = Cast<APlayerController>(GetController()))
+	{
+		player->SetPause(false);
+
+		if (!hud_)
+		{
+			hud_ = Cast<AGenericHUD>(player->GetHUD());
+		}
+
+
+		if (hud_)
+		{
+			hud_->ShowSpecificMenu(hud_->GetPauseMenuClass(), true, false);
+		}
+	}
+}
+
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -139,6 +176,20 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* inputComponent
 	inputComponent->BindAction("Sprint", IE_Pressed, this, &APlayerCharacter::OnSprintStart);
 }
 
+void APlayerCharacter::PossessedBy(AController* controller)
+{
+	Super::PossessedBy(controller);
+
+	if (auto player = Cast<APlayerController>(controller))
+	{
+		hud_ = Cast<AGenericHUD>(player->GetHUD());
+		if (hud_)
+		{
+			hud_->ShowSpecificMenu(hud_->GetGameplayHUDClass(), true, false);
+		}
+	}
+}
+
 float APlayerCharacter::TakeDamage(float damageAmount, FDamageEvent const& damageEvent, AController* eventInstigator, AActor* damageCauser)
 {
 	Super::TakeDamage(damageAmount, damageEvent, eventInstigator, damageCauser);
@@ -165,6 +216,18 @@ float APlayerCharacter::TakeDamage(float damageAmount, FDamageEvent const& damag
 
 void APlayerCharacter::OnDeath_Implementation()
 {
+	if (!hud_)
+	{
+		if (auto player = Cast<APlayerController>(GetController()))
+		{
+			hud_ = Cast<AGenericHUD>(player->GetHUD());
+		}
+	}
+
+	if (hud_)
+	{
+		hud_->ShowSpecificMenu(hud_->GetDeadMenuClass(), false, true);
+	}
 }
 
 void APlayerCharacter::OnSprintStart_Implementation()

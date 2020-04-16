@@ -38,9 +38,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Character|Input|Movement")
 		void Turn(float value);
 
+	UFUNCTION(BlueprintCallable, Category = "Character|Input")
+		void PauseGame();
+
+	UFUNCTION(BlueprintCallable, Category = "Character|Input")
+		void UnPauseGame();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* component) override;
+	virtual void PossessedBy(AController* controller) override;
 	virtual float TakeDamage(float damage,
 		struct FDamageEvent const& damageEvent,
 		class AController* eventInstigator,
@@ -121,4 +128,7 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 		class USkeletalMeshComponent* skeletMesh_;
+
+	UPROPERTY()
+		class AGenericHUD* hud_;
 };

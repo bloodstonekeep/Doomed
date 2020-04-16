@@ -14,4 +14,11 @@ class DOOMED_API UWidget_Gameplay : public UUserWidget
 {
 	GENERATED_BODY()
 	
+protected:
+
+	UFUNCTION(BlueprintPure, Category = "Widget|Gameplay")
+		float GetCurrentHealth();
+
+	UFUNCTION(BlueprintPure, Category = "Widget|Gameplay")
+		FText GetCurrentAmmo();
 };
