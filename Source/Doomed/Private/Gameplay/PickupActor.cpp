@@ -1,27 +1,30 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+#include "Components/SphereComponent.h"
+#include "Characters/PlayerCharacter.h"
 
 #include "Gameplay/PickupActor.h"
 
-// Sets default values
 APickupActor::APickupActor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-}
-
-// Called when the game starts or when spawned
-void APickupActor::BeginPlay()
-{
-	Super::BeginPlay();
+	RootComponent = collectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionSphere"));
 	
+	if (collectionSphere)
+	{
+		collectionSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
+		collectionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+		collectionSphere->OnComponentBeginOverlap.AddDynamic(this, &APickupActor::OnSphereOverlap);
+	}
 }
 
-// Called every frame
-void APickupActor::Tick(float DeltaTime)
+void APickupActor::OnCollection_Implementation(APlayerCharacter* collector)
 {
-	Super::Tick(DeltaTime);
-
+	Destroy();
 }
 
+void APickupActor::OnSphereOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool fromSweep, const FHitResult& sweepResult)
+{
+	auto player = Cast<APlayerCharacter>(otherActor);
+	if (player)
+	{
+		OnCollection(player);
+	}
+}

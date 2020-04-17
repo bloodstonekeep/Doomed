@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -10,17 +8,25 @@ UCLASS()
 class DOOMED_API APickupActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
+
+public:
 	APickupActor();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "PickupActor")
+		void OnCollection(class APlayerCharacter* collector);
+	virtual void OnCollection_Implementation(class APlayerCharacter* collector);
 
+private:
+
+	UFUNCTION()
+		void OnSphereOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor,
+			UPrimitiveComponent* otherComponent, int32 otherBodyIndex,
+			bool fromSweep, const FHitResult& sweepResult);
+
+protected:
+
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+		class USphereComponent* collectionSphere;
 };
