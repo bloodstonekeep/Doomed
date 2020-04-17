@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Gameplay/DestructibleActor.h"
 #include "Components/StaticMeshComponent.h"
 #include "CoreMinimal.h"
 #include "EngineMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/DamageType.h"
-#include "Gameplay/DestructibleActor.h"
 #include "Particles/ParticleSystemComponent.h"
 
 ADestructibleActor::ADestructibleActor()
@@ -16,7 +16,8 @@ ADestructibleActor::ADestructibleActor()
 		mesh->SetCollisionObjectType(ECC_WorldDynamic);
 	}
 
-	currentHealth = maxHealth = 25.f;
+	maxHealth = 25.f;
+	currentHealth = maxHealth;
 	destructionRadius = 400.f;
 	destructionDamage = 25.f;
 
@@ -33,7 +34,7 @@ void ADestructibleActor::BeginPlay()
 	}
 }
 
-void ADestructibleActor::OnDestroy_Implementation()
+void ADestructibleActor::OnDead_Implementation()
 {
 	auto location = GetActorLocation();
 	auto particle = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), destroyParticle, location, FRotator::ZeroRotator, true);
@@ -52,9 +53,12 @@ void ADestructibleActor::OnDestroy_Implementation()
 			TSubclassOf<UDamageType> const ValidDamageTypeClass = TSubclassOf<UDamageType>(UDamageType::StaticClass());
 
 			FDamageEvent DamageEvent(ValidDamageTypeClass);
-
-			overlaps[index].GetActor()->TakeDamage(
-				destructionDamage, DamageEvent, nullptr, this);
+			
+			auto actor = overlaps[index].Actor;
+			if (actor.IsValid() && actor != this)
+			{
+				actor->TakeDamage(destructionDamage, DamageEvent, nullptr, this);
+			}
 		}
 	}
 
@@ -75,12 +79,12 @@ float ADestructibleActor::TakeDamage(float damage, FDamageEvent const& damageEve
 	if (FMath::IsNearlyZero(newHealth) || newHealth < 0.0f)
 	{
 		currentHealth = 0.0f;
-		OnDestroy();
+		OnDead();
+
+		return 0;
 	}
-	else
-	{
-		currentHealth = newHealth;
-	}
+
+	currentHealth = newHealth;
 
 	return currentHealth;
 }

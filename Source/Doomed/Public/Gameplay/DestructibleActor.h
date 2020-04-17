@@ -18,8 +18,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Destructible|Destroy")
-		void OnDestroy();
-	void OnDestroy_Implementation();
+		void OnDead();
+	void OnDead_Implementation();
 
 	virtual float TakeDamage(float damage, struct FDamageEvent const& damageEvent, class AController* eventInstigator, AActor* damageCauser) override;
 

@@ -1,6 +1,6 @@
-#include "Characters/PlayerCharacter.h"
-
 #include "Gameplay/AmmoPickupActor.h"
+
+#include "Characters/PlayerCharacter.h"
 
 void AAmmoPickupActor::OnCollection_Implementation(class APlayerCharacter* collector)
 {

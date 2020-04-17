@@ -1,7 +1,6 @@
+#include "Gameplay/PickupActor.h"
 #include "Components/SphereComponent.h"
 #include "Characters/PlayerCharacter.h"
-
-#include "Gameplay/PickupActor.h"
 
 APickupActor::APickupActor()
 {

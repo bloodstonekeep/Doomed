@@ -1,6 +1,6 @@
-#include "Characters/PlayerCharacter.h"
-
 #include "Gameplay/HealthPickupActor.h"
+
+#include "Characters/PlayerCharacter.h"
 
 void AHealthPickupActor::OnCollection_Implementation(class APlayerCharacter* collector)
 {
