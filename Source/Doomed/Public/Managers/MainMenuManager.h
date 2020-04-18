@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class DOOMED_API AMainMenuManager : public AGameStateBase
+class DOOMED_API AMainMenuManager : public AGameModeBase
 {
 	GENERATED_BODY()
 
