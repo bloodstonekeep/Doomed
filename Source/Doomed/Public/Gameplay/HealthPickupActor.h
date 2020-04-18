@@ -4,9 +4,7 @@
 #include "Gameplay/PickupActor.h"
 #include "HealthPickupActor.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class DOOMED_API AHealthPickupActor : public APickupActor
 {

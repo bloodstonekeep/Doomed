@@ -29,7 +29,8 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character|Death")
 		void OnDeath();
 
-	virtual void OnDeath_Implementation() PURE_VIRTUAL(ACharacterBase::OnDeath_Implementation, );
+	virtual void OnDeath_Implementation()
+		PURE_VIRTUAL(ACharacterBase::OnDeath_Implementation, );
 
 protected:
 	float CurrentHealth;

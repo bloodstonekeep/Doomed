@@ -1,4 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+/*******************************************************
+  * This file is part of project Doomed.
+ *******************************************************/
 
 #include "Gameplay/DestructibleActor.h"
 #include "Components/StaticMeshComponent.h"

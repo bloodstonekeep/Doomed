@@ -1,14 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+/*******************************************************
+  * This file is part of project Doomed.
+ *******************************************************/
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Gameplay/PickupActor.h"
 #include "AmmoPickupActor.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class DOOMED_API AAmmoPickupActor : public APickupActor
 {

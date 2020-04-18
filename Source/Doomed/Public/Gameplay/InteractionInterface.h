@@ -1,4 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+/*******************************************************
+  * This file is part of project Doomed.
+ *******************************************************/
 
 #pragma once
 
@@ -13,9 +15,7 @@ class UInteractionInterface : public UInterface
 	GENERATED_BODY()
 };
 
-/**
- * 
- */
+
 class DOOMED_API IInteractionInterface
 {
 	GENERATED_BODY()
