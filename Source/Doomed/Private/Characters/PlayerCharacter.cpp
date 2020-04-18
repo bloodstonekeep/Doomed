@@ -63,6 +63,8 @@ APlayerCharacter::APlayerCharacter()
 
 	sprintSpeed = 1500.f;
 
+	interactionDistance = 150.f;
+
 	damage = 10.f;
 	fireAnimation = nullptr;
 
@@ -167,6 +169,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* inputComponent
 	inputComponent->BindAxis("BackForward", this, &APlayerCharacter::MoveForward);
 
 	inputComponent->BindAction("Pause", IE_Pressed, this, &APlayerCharacter::PauseGame);
+	inputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::Interact);
 
 	inputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	inputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
@@ -325,5 +328,35 @@ void APlayerCharacter::SpawnShootingParticles(FVector location)
 	{
 		auto particle = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), hitEffect, location, FRotator::ZeroRotator, true);
 		particle->SetWorldScale3D(FVector(.25f));
+	}
+}
+
+void APlayerCharacter::Interact()
+{
+	const FVector startTrace = camera_->GetComponentLocation();
+	const FVector endTrace = startTrace + (camera_->GetForwardVector() * interactionDistance);
+
+	FCollisionQueryParams queryParams;
+	queryParams.AddIgnoredActor(GetOwner());
+	queryParams.AddIgnoredActor(this);
+
+	FHitResult hit;
+	GetWorld()->LineTraceSingleByChannel(hit, startTrace, endTrace,
+		ECollisionChannel::ECC_Visibility, queryParams);
+
+	if (hit.bBlockingHit)
+	{
+		auto hittedActor = hit.GetActor();
+		if (hittedActor->GetClass()->ImplementsInterface(UInteractionInterface::StaticClass()))
+		{
+			if (auto interface = Cast<IInteractionInterface>(hittedActor))
+			{
+				interface->Execute_OnInteract(hittedActor, this);
+			}
+			else
+			{
+				IInteractionInterface::Execute_OnInteract(hittedActor, this);
+			}
+		}
 	}
 }

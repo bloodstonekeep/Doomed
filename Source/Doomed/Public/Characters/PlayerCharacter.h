@@ -1,21 +1,26 @@
+
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Characters/CharacterBase.h"
+#include "Gameplay/InteractionInterface.h"
 #include "PlayerCharacter.generated.h"
 
 /**
 	*
 	*/
 UCLASS()
-	class DOOMED_API APlayerCharacter : public ACharacterBase
+	class DOOMED_API APlayerCharacter : public ACharacterBase, public IInteractionInterface
 {
 	GENERATED_BODY()
 
 public:
 	APlayerCharacter();
+
+	virtual void OnInteract_Implementation(AActor* interactor)
+		PURE_VIRTUAL(IInteractionInterface::OnInteract_Implementation, );
 
 	UFUNCTION(BlueprintPure, Category = "Character|Gun|Ammo")
 		int GetCurrentAmmo() const { return currentAmmo; }
@@ -70,8 +75,10 @@ protected:
 	void OnFire_Implementation();
 
 private:
-
 	void SpawnShootingParticles(FVector location);
+
+	UFUNCTION()
+		void Interact();
 
 protected:
 
@@ -112,6 +119,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character|Gun|Ammo")
 		int maxAmmo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
+		int interactionDistance;
 
 private:
 
