@@ -7,7 +7,8 @@ Proof of concept with basic interactions and effects scripted in C++ and bluepri
 Simple demo of technology for assignment on University of Lower Silesia.
 
 ## Instruction
-Unzip release or build from source.
+* Head to [Releases](https://github.com/Ursanon/Doomed/releases) and download latest.
+* Or build from source.
 
 ## How to play?
 ```
