@@ -26,6 +26,7 @@ bool AGenericHUD::ShowSpecificMenu(TSubclassOf<class UUserWidget> classToShow, b
 		}
 		else
 		{
+
 			FInputModeUIOnly inputMode;
 
 			inputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);

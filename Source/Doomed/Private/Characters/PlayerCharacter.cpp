@@ -136,10 +136,9 @@ void APlayerCharacter::UnPauseGame()
 			hud_ = Cast<AGenericHUD>(player->GetHUD());
 		}
 
-
 		if (hud_)
 		{
-			hud_->ShowSpecificMenu(hud_->GetPauseMenuClass(), true, false);
+			hud_->ShowSpecificMenu(hud_->GetGameplayHUDClass(), true, false);
 		}
 	}
 }
@@ -166,6 +165,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* inputComponent
 	inputComponent->BindAxis("MouseY", this, &APlayerCharacter::LookUp);
 	inputComponent->BindAxis("LeftRight", this, &APlayerCharacter::MoveRight);
 	inputComponent->BindAxis("BackForward", this, &APlayerCharacter::MoveForward);
+
+	inputComponent->BindAction("Pause", IE_Pressed, this, &APlayerCharacter::PauseGame);
 
 	inputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	inputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
