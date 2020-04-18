@@ -13,5 +13,8 @@
 				"UMG"
 			]
 		}
+	],
+	"TargetPlatforms": [
+		"WindowsNoEditor"
 	]
 }
